@@ -1,70 +1,47 @@
 <script lang="ts">
+	import type { PageData } from './$types';
 
-import Textfield from '@smui/textfield';
-import Button from '@smui/button'
+	import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
+	import Button from '@smui/button';
+	import { redirect } from '@sveltejs/kit';
+	import { goto } from '$app/navigation';
 
-let tittel: string = '';
-let beskrivelse: string = '';
-let dato: string = '';
-let tidspunkt: string = '';
-
+	export let data: PageData;
 </script>
 
-
-<main class="container">
-  <h1>Nytt event</h1>
-  <form method="POST">
-      <Textfield
-      input$name="tittel"
-      bind:value = {tittel}
-      label="Tittel"
-      style="min-width: 250px; margin-bottom: 5%"
-      required
-      variant="outlined"
-      />
-      <Textfield
-      input$name="beskrivelse"
-      bind:value = {beskrivelse}
-      label="Beskrivelse"
-      style="margin-bottom: 5%"
-      input$rows={15}
-      input$cols={55}
-      textarea
-      required
-      variant="outlined"
-      />
-      <Textfield
-      input$name="dato"
-      type="date"
-      bind:value = {dato}
-      label="Dato"
-      style="margin-bottom: 5%"
-      variant="outlined"
-      />
-      <Textfield
-      input$name="tidspunkt"
-      type="time"
-      bind:value = {tidspunkt}
-      label="Tidspunkt"
-      style="margin-bottom: 5%"
-      variant="outlined"
-      />
-      <Button variant="raised">Lag event</Button>
-  </form>
+<main>
+	<h1>Fagkvelder med Capra</h1>
+	<DataTable table$width={1000}>
+		<Head>
+			<Row>
+				<Cell>Tittel</Cell>
+				<Cell>Beskrivelse</Cell>
+				<Cell>Dato</Cell>
+				<Cell></Cell>
+			</Row>
+		</Head>
+		<Body>
+			{#each data.eventer as event}
+				<Row>
+					<Cell>{event.tittel}</Cell>
+					<Cell>{event.beskrivelse}</Cell>
+					<Cell>{event.dato}</Cell>
+					<Cell
+						><Button variant="raised" on:click={() => goto(`eventer/${event.id}`)}
+							>Meld deg på</Button
+						></Cell
+					>
+				</Row>
+			{/each}
+		</Body>
+	</DataTable>
 </main>
 
-
 <style>
-
-  .container {
-    display: grid;
-    margin-top: 5%;
-    justify-content: center;
-    align-items: center;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-  }
+	main {
+		display: grid;
+		margin-top: 5%;
+		justify-content: center;
+		align-items: center;
+	}
 </style>

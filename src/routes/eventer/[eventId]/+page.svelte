@@ -1,37 +1,61 @@
 <script lang="ts">
-  import type { PageData } from './$types';
+	import Textfield from '@smui/textfield';
+	import Button from '@smui/button';
+	import Select, { Option } from '@smui/select';
+	import Chip, { Set, Text } from '@smui/chips';
 
-  import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
-  import Fab from '@smui/fab'
-  import { Label } from '@smui/common'
+	import type { PageData } from './$types';
 
-  export let data: PageData;
+	let navn: string = '';
+	let org: string = '';
+	let allergier: string[] = [];
 
+	export let data: PageData;
 </script>
 
-
 <main>
-    <DataTable>
-      <Head>
-        <Row>
-          <Cell>Navn</Cell>
-          <Cell>Organisasjon</Cell>
-          <Cell>Epost</Cell>
-          <Cell>Allergier</Cell>
-          <Cell>RSVP</Cell>
-        </Row>
-      </Head>
-      <Body>
-        {#each data.deltakere as person}
-        <Row>
-          <Cell>{person.navn}</Cell>
-          <Cell>{person.orgId}</Cell>
-          <Cell>{person.epost}</Cell>
-          <Cell>
-            {person.rsvp}
-          </Cell>
-        </Row> 
-        {/each}
-      </Body>
-    </DataTable>
-  </main>
+	<h1>Registrering til "{data.eventData?.tittel}"</h1>
+	<form method="POST">
+		<Textfield
+			input$name="navn"
+			bind:value={navn}
+			label="Navn"
+			style="min-width: 250px; margin-bottom: 5%"
+			required
+			variant="outlined"
+		/>
+		<Textfield
+			input$name="org"
+			bind:value={org}
+			label="Organisasjon"
+			style="min-width: 250px; margin-bottom: 5%"
+			required
+			variant="outlined"
+		/>
+		<div class="allergiListe">
+			<Set chips={data.allergiListe} let:chip filter bind:selected={allergier}>
+				<Chip {chip}><Text>{chip}</Text></Chip>
+			</Set>
+		</div>
+		<Button variant="raised">Meld deg på</Button>
+	</form>
+</main>
+
+<style>
+	main {
+		display: grid;
+		margin-top: 5%;
+		justify-content: center;
+		align-items: center;
+	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.allergiListe {
+		max-width: 10em;
+		margin-bottom: 5%;
+	}
+</style>

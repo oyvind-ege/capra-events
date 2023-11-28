@@ -1,15 +1,23 @@
-import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import { getDeltakereForEvent } from '$lib/server/database';
+import { addDeltakerToEvent, getAllergiListe, getEventInformasjon } from '$lib/server/database';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const deltakere = await getDeltakereForEvent(parseInt(params.eventId));
-
-	if (deltakere) {
-		return {
-			deltakere: deltakere
-		};
-	}
-
-	throw error(404, "Not found deltakere")
+	const eventData = await getEventInformasjon(Number(params.eventId));
+	const allergiListe = (await getAllergiListe()).map((allergiObject) => allergiObject.navn);
+	return {
+		eventData,
+		allergiListe
+	};
 };
+
+export const actions = {
+	default: async ({ request }) => {
+		const data = await request.formData();
+
+		const navn = data.get('navn') as string;
+
+		const result = await addDeltakerToEvent(request.params.eventId);
+
+		return { success: true, payload: result };
+	}
+} satisfies Actions;
