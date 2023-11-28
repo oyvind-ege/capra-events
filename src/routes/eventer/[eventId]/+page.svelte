@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Textfield from '@smui/textfield';
 	import Button from '@smui/button';
-	import Select, { Option } from '@smui/select';
 	import Chip, { Set, Text } from '@smui/chips';
 
 	import type { PageData } from './$types';
@@ -33,7 +32,8 @@
 			variant="outlined"
 		/>
 		<div class="allergiListe">
-			<Set chips={data.allergiListe} let:chip filter bind:selected={allergier}>
+			<h2>Allergiliste</h2>
+			<Set chips={data.allergiListe.sort()} let:chip filter bind:selected={allergier}>
 				<Chip {chip}><Text>{chip}</Text></Chip>
 			</Set>
 		</div>
@@ -55,7 +55,7 @@
 	}
 
 	.allergiListe {
-		max-width: 10em;
+		max-width: 40em;
 		margin-bottom: 5%;
 	}
 </style>
