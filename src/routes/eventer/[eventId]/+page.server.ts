@@ -1,5 +1,5 @@
-import { addDeltakerToEvent, getAllergiListe, getEventInformasjon } from '$lib/server/database';
-import type { Actions, PageServerLoad } from './$types';
+import { getAllergiListe, getEventInformasjon } from '$lib/server/database';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const eventData = await getEventInformasjon(Number(params.eventId));
@@ -9,15 +9,3 @@ export const load: PageServerLoad = async ({ params }) => {
 		allergiListe
 	};
 };
-
-export const actions = {
-	default: async ({ request }) => {
-		const data = await request.formData();
-
-		const navn = data.get('navn') as string;
-
-		const result = await addDeltakerToEvent(request.params.eventId);
-
-		return { success: true, payload: result };
-	}
-} satisfies Actions;
