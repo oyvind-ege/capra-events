@@ -50,6 +50,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@notionhq/client": "^2.2.14",
 		"@vercel/postgres": "^0.5.1"
 	}
 }
