@@ -13,10 +13,20 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 	const response = await notion.databases.query({
 		database_id: env.NOTION_AKTIVITETSOVERSIKT_DB_ID,
 		filter: {
-			property: 'Åpen for eksterne',
-			checkbox: {
-				equals: true
-			}
+			and: [
+				{
+					property: 'Åpen for eksterne',
+					checkbox: {
+						equals: true
+					}
+				},
+				{
+					property: 'Klar for publisering',
+					checkbox: {
+						equals: true
+					}
+				}
+			]
 		},
 		sorts: [
 			{
