@@ -29,7 +29,8 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 				}
 			]
 		},
-		//Dette finner du ved notion.databases.retrieve(...), se på "id" feltet.
+		// Henter kun kolonnene "Aktivitet", "Dato", og "Beskrivelse"
+		// Dette er ID til disse kolonnene. Dette finner du ved notion.databases.retrieve(...), se på "id" feltet.
 		filter_properties: ['title', '_z%7Bo', 'leeA'],
 		sorts: [
 			{
