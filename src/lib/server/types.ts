@@ -1,15 +1,46 @@
 export type CapraEvent = {
-  name: string;
-  date: string;
-  description: string;
-}
+	name: string;
+	date: string;
+	description: string;
+};
+
+type NotionColumnType =
+	| 'rich_text'
+	| 'checkbox'
+	| 'created_by'
+	| 'created_time'
+	| 'date'
+	| 'email'
+	| 'files'
+	| 'formula'
+	| 'last_edited_by'
+	| 'last_edited_time'
+	| 'multi_select'
+	| 'number'
+	| 'people'
+	| 'phone_number'
+	| 'relation'
+	| 'rich_text'
+	| 'rollup'
+	| 'select'
+	| 'status'
+	| 'title'
+	| 'url';
+
+export type NotionDatabaseQueryResult = {
+	properties: {
+		id: string;
+		name: string;
+		type: NotionColumnType;
+	};
+};
 
 export type CapraEventProperties = {
-  Aktivitet: {
-    title: {plain_text: string}[]
-  };
-  Beskrivelse: {}
-}
+	Aktivitet: {
+		title: { plain_text: string }[];
+	};
+	Beskrivelse: unknown;
+};
 /*
 *
 Aktivitet
