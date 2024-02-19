@@ -40,7 +40,7 @@ export type CapraEventNotionProperties = {
 	Aktivitet: {
 		title: { plain_text: string }[];
 	};
-	Beskrivelse: { rich_text: { text: string }[] };
+	Beskrivelse: { rich_text: { plain_text: string }[] };
 	Dato: {
 		date: NotionDateObject;
 	};

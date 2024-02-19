@@ -49,7 +49,7 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 		return {
 			name: properties.Aktivitet?.title[0]?.plain_text ?? '',
 			date: properties.Dato?.date || { start: '' },
-			description: properties.Beskrivelse?.rich_text[0]?.text ?? ''
+			description: properties.Beskrivelse?.rich_text[0]?.plain_text ?? ''
 		};
 	});
 };
