@@ -1,16 +1,28 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import dayjs from 'dayjs';
 
 	export let data: PageData;
 </script>
 
 <main>
 	<h1>Fagkvelder med Capra</h1>
-	{#each data.aktiviteter as { name, date, description }}
-		<h3>Tittel: {name}</h3>
-		<p>Dato og tid: {date.start} til {date.end}</p>
-		<p>Beskrivelse: {description}</p>
-	{/each}
+	<table>
+		<tr>
+			<th>Dato</th>
+			<th>Tittel</th>
+			<th>Påmeldte</th>
+			<th>Påmelding</th>
+		</tr>
+		{#each data.aktiviteter as { name, date, description }}
+			<tr>
+				<td>{dayjs(date.start).format('DD.MM')}</td>
+				<td>{name}</td>
+				<td>3/40</td>
+				<td>Klikk her</td>
+			</tr>
+		{/each}
+	</table>
 </main>
 
 <style>
