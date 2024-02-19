@@ -1,13 +1,13 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { getAlleEventer } from '$lib/server/database';
+import { fetchAktivitetsoversiktFromNotion } from "$lib/server/client";
 
 export const load: PageServerLoad = async () => {
-	const eventer = await getAlleEventer();
+	const aktivitetsoversikt = await fetchAktivitetsoversiktFromNotion();
 
-	if (eventer) {
+	if (aktivitetsoversikt) {
 		return {
-			eventer
+			aktivitetsoversikt
 		};
 	}
 
