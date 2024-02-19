@@ -1,6 +1,6 @@
 import { Client } from '@notionhq/client';
 import { env } from '$env/dynamic/private';
-import type { CapraEvent, NotionPropertiesObject } from '$lib/server/types';
+import type { CapraEvent, CapraEventNotionProperties } from '$lib/server/types';
 
 const setup = () => {
 	return new Client({
@@ -36,10 +36,12 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 		]
 	});
 
-	console.log('Response:', response);
+	if (response.results.length < 1) {
+		return [];
+	}
 
 	return response.results.map((result) => {
-		const properties = result.properties as NotionPropertiesObject;
+		const properties = result.properties as CapraEventNotionProperties;
 
 		return {
 			name: properties.Aktivitet?.title[0]?.plain_text ?? '',

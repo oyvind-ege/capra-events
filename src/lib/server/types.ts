@@ -4,6 +4,7 @@ export type CapraEvent = {
 	description: string;
 };
 
+/* eslint-disable  @typescript-eslint/no-unused-vars */
 type NotionColumnType =
 	| 'rich_text'
 	| 'checkbox'
@@ -27,21 +28,33 @@ type NotionColumnType =
 	| 'title'
 	| 'url';
 
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-export type NotionPropertiesObject = {
-	[key: string]: {
-		id: string;
-		name: string;
-		type: NotionColumnType;
-	} & { [k in NotionColumnType]: any };
-};
+type CapraEventStatus = 'Tentativt' | 'Skal gjennomføres' | 'Gjennomført' | 'Arkivert';
 
-export type CapraEventProperties = {
+export type CapraEventNotionProperties = {
 	Aktivitet: {
 		title: { plain_text: string }[];
 	};
-	Beskrivelse: unknown;
+	Beskrivelse: { rich_text: { plain_text: string }[] };
+	Dato: {
+		date: {
+			start: string;
+			end?: string;
+			time_zone?: string;
+		};
+	};
+	'Åpen for eksterne': {
+		checkbox: boolean;
+	};
+	'Klar for publisering': {
+		checkbox: boolean;
+	};
+	Status: {
+		status: {
+			name: CapraEventStatus;
+		};
+	};
 };
+
 /*
 *
 Aktivitet

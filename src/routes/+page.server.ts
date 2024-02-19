@@ -3,11 +3,11 @@ import type { PageServerLoad } from './$types';
 import { fetchAktivitetsoversiktFromNotion } from '$lib/server/client';
 
 export const load: PageServerLoad = async () => {
-	const aktivitetsoversikt = await fetchAktivitetsoversiktFromNotion();
+	const aktiviteter = await fetchAktivitetsoversiktFromNotion();
 
-	if (aktivitetsoversikt) {
+	if (aktiviteter) {
 		return {
-			aktivitetsoversikt
+			aktiviteter
 		};
 	}
 
