@@ -11,6 +11,10 @@ const setup = () => {
 export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]> => {
 	const notion = setup();
 
+	const res = await notion.databases.retrieve({ database_id: env.NOTION_AKTIVITETSOVERSIKT_DB_ID });
+
+	console.log(res);
+
 	const response = await notion.databases.query({
 		database_id: env.NOTION_AKTIVITETSOVERSIKT_DB_ID,
 		filter: {
@@ -31,7 +35,7 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 		},
 		// Henter kun visse kolonner
 		// Dette er ID til disse kolonnene. Dette finner du ved notion.databases.retrieve(...), se på "id" feltet.
-		filter_properties: ['title', '_z%7Bo', 'leeA', '%3AE%5BO'],
+		filter_properties: ['title', 'ZxM%40', '_z%7Bo', 'leeA', '%3AE%5BO'],
 		sorts: [
 			{
 				property: 'Dato',
@@ -47,7 +51,10 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 	return response.results.map((result) => {
 		const properties = result.properties as CapraEventNotionProperties;
 
+		console.log(properties);
+
 		return {
+			id: properties.Id?.unique_id?.number,
 			name: properties.Aktivitet?.title[0]?.plain_text ?? '',
 			date: properties.Dato?.date || { start: '' },
 			description: properties.Beskrivelse?.rich_text[0]?.plain_text ?? ''

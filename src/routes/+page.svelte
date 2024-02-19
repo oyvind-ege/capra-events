@@ -19,7 +19,7 @@
 				<td>{dayjs(date.start).format('DD.MM')}</td>
 				<td>{name}</td>
 				<td>3/40</td>
-				<td>Klikk her</td>
+				<td><a href="/eventer/">Klikk her</a></td>
 			</tr>
 		{/each}
 	</table>

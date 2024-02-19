@@ -37,6 +37,9 @@ type NotionColumnType =
 type CapraEventStatus = 'Tentativt' | 'Skal gjennomføres' | 'Gjennomført' | 'Arkivert';
 
 export type CapraEventNotionProperties = {
+	Id: {
+		unique_id: { prefix: string; number: number };
+	};
 	Aktivitet: {
 		title: { plain_text: string }[];
 	};
