@@ -12,6 +12,12 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 	const notion = setup();
 	const response = await notion.databases.query({
 		database_id: env.NOTION_AKTIVITETSOVERSIKT_DB_ID,
+		filter: {
+			property: 'Åpen for eksterne',
+			checkbox: {
+				equals: true
+			}
+		},
 		sorts: [
 			{
 				property: 'Dato',
@@ -19,6 +25,8 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 			}
 		]
 	});
+
+	console.log('Response:', response);
 
 	return response.results.map((result) => {
 		const properties = result.properties as NotionPropertiesObject;
