@@ -1,6 +1,6 @@
 import { Client } from '@notionhq/client';
 import { env } from '$env/dynamic/private';
-import type { CapraEvent } from '$lib/server/types';
+import type { CapraEvent, NotionPropertiesObject } from '$lib/server/types';
 
 const setup = () => {
 	return new Client({
@@ -11,18 +11,22 @@ const setup = () => {
 export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]> => {
 	const notion = setup();
 	const response = await notion.databases.query({
-		database_id: env.NOTION_AKTIVITETSOVERSIKT_DB_ID
+		database_id: env.NOTION_AKTIVITETSOVERSIKT_DB_ID,
+		sorts: [
+			{
+				property: 'Dato',
+				direction: 'ascending'
+			}
+		]
 	});
 
-	return response.results
-		.map((result) => {
-			const properties = result.properties;
+	return response.results.map((result) => {
+		const properties = result.properties as NotionPropertiesObject;
 
-			return {
-				name: properties.Aktivitet?.title[0]?.plain_text ?? '',
-				date: properties.Dato?.date?.start ?? '',
-				description: properties.Beskrivelse?.rich_text[0]?.plain_text ?? ''
-			};
-		})
-		.sort((a, b) => (a.date < b.date ? 1 : -1));
+		return {
+			name: properties.Aktivitet?.title[0]?.plain_text ?? '',
+			date: properties.Dato?.date?.start ?? '',
+			description: properties.Beskrivelse?.rich_text[0]?.plain_text ?? ''
+		};
+	});
 };

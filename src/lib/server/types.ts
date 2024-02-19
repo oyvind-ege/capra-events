@@ -27,12 +27,13 @@ type NotionColumnType =
 	| 'title'
 	| 'url';
 
-export type NotionDatabaseQueryResult = {
-	properties: {
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+export type NotionPropertiesObject = {
+	[key: string]: {
 		id: string;
 		name: string;
 		type: NotionColumnType;
-	};
+	} & { [k in NotionColumnType]: any };
 };
 
 export type CapraEventProperties = {
