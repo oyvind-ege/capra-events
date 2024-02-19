@@ -21,7 +21,7 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 		sorts: [
 			{
 				property: 'Dato',
-				direction: 'ascending'
+				direction: 'descending'
 			}
 		]
 	});
