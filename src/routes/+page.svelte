@@ -6,9 +6,9 @@
 
 <main>
 	<h1>Fagkvelder med Capra</h1>
-	{#each data.aktivitetsoversikt as { name, date, description }}
+	{#each data.aktiviteter as { name, date, description }}
 		<h3>Tittel: {name}</h3>
-		<p>Dato: {date}</p>
+		<p>Dato og tid: {date.start} til {date.end}</p>
 		<p>Beskrivelse: {description}</p>
 	{/each}
 </main>

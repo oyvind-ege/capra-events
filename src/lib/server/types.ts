@@ -1,7 +1,13 @@
 export type CapraEvent = {
 	name: string;
-	date: string;
+	date: NotionDateObject;
 	description: string;
+};
+
+type NotionDateObject = {
+	start: string;
+	end?: string;
+	time_zone?: string;
 };
 
 /* eslint-disable  @typescript-eslint/no-unused-vars */
@@ -34,13 +40,9 @@ export type CapraEventNotionProperties = {
 	Aktivitet: {
 		title: { plain_text: string }[];
 	};
-	Beskrivelse: { rich_text: { plain_text: string }[] };
+	Beskrivelse: { rich_text: { text: string }[] };
 	Dato: {
-		date: {
-			start: string;
-			end?: string;
-			time_zone?: string;
-		};
+		date: NotionDateObject;
 	};
 	'Åpen for eksterne': {
 		checkbox: boolean;

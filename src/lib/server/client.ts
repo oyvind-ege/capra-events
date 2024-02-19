@@ -10,6 +10,7 @@ const setup = () => {
 
 export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]> => {
 	const notion = setup();
+
 	const response = await notion.databases.query({
 		database_id: env.NOTION_AKTIVITETSOVERSIKT_DB_ID,
 		filter: {
@@ -28,6 +29,8 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 				}
 			]
 		},
+		//Dette finner du ved notion.databases.retrieve(...), se på "id" feltet.
+		filter_properties: ['title', '_z%7Bo', 'leeA'],
 		sorts: [
 			{
 				property: 'Dato',
@@ -45,8 +48,8 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 
 		return {
 			name: properties.Aktivitet?.title[0]?.plain_text ?? '',
-			date: properties.Dato?.date?.start ?? '',
-			description: properties.Beskrivelse?.rich_text[0]?.plain_text ?? ''
+			date: properties.Dato?.date || { start: '' },
+			description: properties.Beskrivelse?.rich_text[0]?.text ?? ''
 		};
 	});
 };
