@@ -1,13 +1,26 @@
 export type CapraEvent = {
+	id: number;
 	name: string;
 	date: NotionDateObject;
 	description: string;
+	deltakerlisteId: string;
+};
+
+export type Deltaker = {
+	id: number;
+	name: string;
+	epost: string;
+	telefon: string;
 };
 
 type NotionDateObject = {
 	start: string;
 	end?: string;
 	time_zone?: string;
+};
+
+type NotionRelationObject = {
+	id: string;
 };
 
 /* eslint-disable  @typescript-eslint/no-unused-vars */
@@ -37,7 +50,7 @@ type NotionColumnType =
 type CapraEventStatus = 'Tentativt' | 'Skal gjennomføres' | 'Gjennomført' | 'Arkivert';
 
 export type CapraEventNotionProperties = {
-	Id: {
+	ID: {
 		unique_id: { prefix: string; number: number };
 	};
 	Aktivitet: {
@@ -57,6 +70,9 @@ export type CapraEventNotionProperties = {
 		status: {
 			name: CapraEventStatus;
 		};
+	};
+	Deltakerliste: {
+		relation: NotionRelationObject[];
 	};
 };
 

@@ -1,6 +1,7 @@
 import { Client } from '@notionhq/client';
 import { env } from '$env/dynamic/private';
-import type { CapraEvent, CapraEventNotionProperties } from '$lib/server/types';
+import type { CapraEvent, CapraEventNotionProperties, Deltaker } from '$lib/server/types';
+import { isChildDatabaseBlock } from './utils/typeguards';
 
 const setup = () => {
 	return new Client({
@@ -10,10 +11,6 @@ const setup = () => {
 
 export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]> => {
 	const notion = setup();
-
-	const res = await notion.databases.retrieve({ database_id: env.NOTION_AKTIVITETSOVERSIKT_DB_ID });
-
-	console.log(res);
 
 	const response = await notion.databases.query({
 		database_id: env.NOTION_AKTIVITETSOVERSIKT_DB_ID,
@@ -35,7 +32,7 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 		},
 		// Henter kun visse kolonner
 		// Dette er ID til disse kolonnene. Dette finner du ved notion.databases.retrieve(...), se på "id" feltet.
-		filter_properties: ['title', 'ZxM%40', '_z%7Bo', 'leeA', '%3AE%5BO'],
+		filter_properties: ['title', 'ZxM%40', '_z%7Bo', 'leeA', '%3AE%5BO', 'iGWH'],
 		sorts: [
 			{
 				property: 'Dato',
@@ -51,13 +48,45 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
 	return response.results.map((result) => {
 		const properties = result.properties as CapraEventNotionProperties;
 
-		console.log(properties);
+		console.log('Properties', properties);
+
+		console.log('Deltakerliste: ', properties.Deltakerliste.relation[0]);
 
 		return {
-			id: properties.Id?.unique_id?.number,
+			id: properties.ID?.unique_id?.number,
 			name: properties.Aktivitet?.title[0]?.plain_text ?? '',
 			date: properties.Dato?.date || { start: '' },
-			description: properties.Beskrivelse?.rich_text[0]?.plain_text ?? ''
+			description: properties.Beskrivelse?.rich_text[0]?.plain_text ?? '',
+			deltakerlisteId: properties.Deltakerliste.relation[0].id ?? ''
 		};
 	});
+};
+
+/**
+ * Under siden "Deltakerlister for arrangementer" ligger deltakerlistene for hvert arrangement. Disse er Pages.
+ * Hvert arrangement har derfor sin Page, og hver slik Page har en underdatabase med deltakere.
+ * Denne henter data fra denne Databasen.
+ * https://www.notion.so/capra/a3cad9f19aa54982a7513464e23f9d47?v=30969d8a71894e34bd498d0e3826dcc3&pvs=4
+ * @param deltakerlisteId - ID til siden under "Deltakerlister for arrangementer"
+ */
+export const fetchDeltakerere = async (deltakerlisteId: string) => {
+	const notion = setup();
+
+	const res = await notion.blocks.children.list({ block_id: deltakerlisteId });
+
+	if (res.results.length < 1) {
+		return [];
+	}
+
+	const deltakerDatabase = res.results.filter((block) => isChildDatabaseBlock(block));
+
+	const deltakerDatabaseId = deltakerDatabase[0].id;
+
+	console.log('Deltakerdatabase:', deltakerDatabaseId);
+
+	const datres = await notion.databases.query({
+		database_id: deltakerDatabaseId
+	});
+
+	console.log('Deltakere:', datres.results);
 };

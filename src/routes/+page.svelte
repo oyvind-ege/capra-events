@@ -14,12 +14,12 @@
 			<th>Påmeldte</th>
 			<th>Påmelding</th>
 		</tr>
-		{#each data.aktiviteter as { name, date, description }}
+		{#each data.aktiviteter as { name, date, description, id }}
 			<tr>
 				<td>{dayjs(date.start).format('DD.MM')}</td>
 				<td>{name}</td>
 				<td>3/40</td>
-				<td><a href="/eventer/">Klikk her</a></td>
+				<td><a href="/eventer/{id}">Klikk her</a></td>
 			</tr>
 		{/each}
 	</table>
