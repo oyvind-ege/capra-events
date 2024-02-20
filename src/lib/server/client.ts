@@ -69,7 +69,7 @@ export const fetchAktivitetsoversiktFromNotion = async (): Promise<CapraEvent[]>
  * https://www.notion.so/capra/a3cad9f19aa54982a7513464e23f9d47?v=30969d8a71894e34bd498d0e3826dcc3&pvs=4
  * @param deltakerlisteId - ID til siden under "Deltakerlister for arrangementer"
  */
-export const fetchDeltakerere = async (deltakerlisteId: string) => {
+export const fetchDeltakere = async (deltakerlisteId: string) => {
 	const notion = setup();
 
 	const res = await notion.blocks.children.list({ block_id: deltakerlisteId });
